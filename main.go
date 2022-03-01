@@ -28,12 +28,8 @@ func init() {
 }
 func main() {
 	var g errgroup.Group
-	g.Go(func() error {
-		return dns.Server()
-	})
-	g.Go(func() error {
-		return web.Server()
-	})
+	g.Go(dns.Server)
+	g.Go(web.Server)
 	err := g.Wait()
 	if err != nil {
 		log.Fatal(err.Error())
