@@ -16,8 +16,6 @@ steps:
       force_tag: true
 
 trigger:
-  branch:
-    - master
   event:
     - tag
     - push
