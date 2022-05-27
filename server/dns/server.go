@@ -13,6 +13,7 @@ func handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 	info := fmt.Sprintf("Question: Type=%s Class=%s Name=%s", dns.TypeToString[q.Qtype], dns.ClassToString[q.Qclass], q.Name)
 	m := new(dns.Msg)
 	m.SetReply(r)
+	m.Authoritative = true
 	if record, ok := records.Get(q.Name); q.Qtype == dns.TypeA && q.Qclass == dns.ClassINET && ok {
 		a := new(dns.A)
 		a.Hdr = dns.RR_Header{Name: q.Name, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 600}
@@ -20,7 +21,7 @@ func handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 		m.Answer = []dns.RR{a}
 		log.Debug(info)
 	} else {
-		m.Rcode = 2
+		m.Rcode = 3
 	}
 	w.WriteMsg(m)
 

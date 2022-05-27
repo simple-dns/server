@@ -20,7 +20,7 @@ func init() {
 	log.SetLevel(logLevel)
 	log.SetReportCaller(true)
 	log.SetFormatter(&log.TextFormatter{
-		TimestampFormat: "2006-01-02 15:03:04",
+		TimestampFormat: "2000-01-01 00:00:00",
 		CallerPrettyfier: func(frame *runtime.Frame) (function string, file string) {
 			return fmt.Sprintf("%s:%d", frame.Function, frame.Line), ""
 		},
