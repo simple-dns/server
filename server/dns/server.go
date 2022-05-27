@@ -10,7 +10,6 @@ import (
 
 func handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 	q := r.Question[0]
-	info := fmt.Sprintf("Question: Type=%s Class=%s Name=%s", dns.TypeToString[q.Qtype], dns.ClassToString[q.Qclass], q.Name)
 	m := new(dns.Msg)
 	m.SetReply(r)
 	m.Authoritative = true
@@ -19,9 +18,21 @@ func handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 		a.Hdr = dns.RR_Header{Name: q.Name, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 600}
 		a.A = net.ParseIP(record.(Record).Ip)
 		m.Answer = []dns.RR{a}
+		info := fmt.Sprintf("Question: Type=%s Class=%s Name=%s Record=%s", dns.TypeToString[q.Qtype], dns.ClassToString[q.Qclass], q.Name, a.A)
 		log.Debug(info)
 	} else {
-		m.Rcode = 2
+		if config.GetDnsConfig().ForwarderServer != "" {
+			client := dns.Client{Net: "udp"}
+			res, _, err := client.Exchange(r, config.GetDnsConfig().ForwarderServer)
+			if err != nil {
+				errorInfo := fmt.Sprintf("Question:  Name=%s errInfo=%s", q.Name, err)
+				log.Error(errorInfo)
+			} else {
+				m = res
+			}
+		} else {
+			m.Rcode = 2
+		}
 	}
 	w.WriteMsg(m)
 

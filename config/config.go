@@ -18,9 +18,9 @@ type HttpConfig struct {
 }
 
 type DnsConfig struct {
-	DnsPort      string `envconfig:"DNS_PORT" default:"53"`
-	NameServer   string `envconfig:"NAME_SERVER" default:"223.5.5.5"`
-	DomainSuffix string `envconfig:"DOMAIN_SUFFIX" default:""`
+	DnsPort         string `envconfig:"DNS_PORT" default:"53"`
+	ForwarderServer string `envconfig:"FORWARDER_SERVER" default:""`
+	DomainSuffix    string `envconfig:"DOMAIN_SUFFIX" default:""`
 }
 type Config struct {
 	Http  HttpConfig
