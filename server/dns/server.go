@@ -21,7 +21,7 @@ func handleRequest(w dns.ResponseWriter, r *dns.Msg) {
 		m.Answer = []dns.RR{a}
 		log.Debug(info)
 	} else {
-		m.Rcode = 3
+		m.Rcode = 2
 	}
 	w.WriteMsg(m)
 
