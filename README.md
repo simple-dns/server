@@ -15,3 +15,5 @@
 ​	DOMAIN_SUFFIX: record domain suffix
 
 ​	DEBUG: enable debug model
+
+  FORWARDER_SERVER: enable forwarder
